@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'dealership',
+  title: 'Akram import and export',
 }
 
 export default function RootLayout({
