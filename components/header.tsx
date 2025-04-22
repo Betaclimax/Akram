@@ -41,7 +41,7 @@ export function SiteHeader() {
             <circle cx="17" cy="17" r="2" />
           </svg>
           <span className="font-bold text-2xl tracking-tight bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
-            Akram import and export
+            Akram 
           </span>
         </Link>
         <nav className="ml-auto flex gap-6 sm:gap-8">
