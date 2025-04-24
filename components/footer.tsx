@@ -90,23 +90,8 @@ export function SiteFooter() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/careers" className="text-gray-400 hover:text-white transition-colors">
-                    Careers
-                  </Link>
-                </li>
-                <li>
                   <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
                     Contact Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/press" className="text-gray-400 hover:text-white transition-colors">
-                    Press
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/partners" className="text-gray-400 hover:text-white transition-colors">
-                    Partners
                   </Link>
                 </li>
               </ul>
