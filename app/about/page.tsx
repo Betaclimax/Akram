@@ -140,7 +140,7 @@ export default function AboutPage() {
                 {
                   name: "Akram Benseridi",
                   role: "Founder & CEO",
-                  image: "/placeholder.svg?height=400&width=400&text=Alexander+Reynolds",
+                  image: "",
                   bio: "Akram founded Akram Import and Export with a vision to redefine the car buying experience.",
                 },
                 {
@@ -246,18 +246,21 @@ export default function AboutPage() {
                 {
                   quote:
                     "The most exceptional car buying experience I've ever had. The team at Akram Import and Export went above and beyond to find me the perfect Porsche 911.",
+                  image:"/images/avatar/avatarman2.PNG",
                   author: "Yacine",
                   rating: 5,
                 },
                 {
                   quote:
                     "From the moment I walked in, I knew this wasn't your typical dealership. The attention to detail and personalized service is unmatched.",
+                  image:"/images/avatar/avatarwoman.PNG",
                   author: "Amel",
                   rating: 5,
                 },
                 {
                   quote:
                     "I've purchased three vehicles from Akram Import and Export over the years, and each experience has been better than the last. They truly understand luxury.",
+                  image:"/images/avatar/avatarman3.PNG",
                   author: "Bilal",
                   rating: 5,
                 },
@@ -272,7 +275,7 @@ export default function AboutPage() {
                     <p className="text-gray-600 italic mb-6">"{testimonial.quote}"</p>
                     <div className="flex items-center">
                       <div className="h-12 w-12 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                        {testimonial.author.charAt(0)}
+                        <img src={testimonial.image} alt={testimonial.author} className="h-full w-full object-cover rounded-full" />
                       </div>
                       <div className="ml-4">
                         <p className="font-bold">{testimonial.author}</p>       
