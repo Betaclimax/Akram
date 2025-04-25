@@ -1,100 +1,108 @@
+"use client"
 import Link from "next/link"
 import Image from "next/image"
-import { Filter, Search, Sliders } from "lucide-react"
 import { SiteHeader } from "@/components/header"
 import { SiteFooter } from "@/components/footer"
+import { ChevronDown, Filter, Search, Star } from "lucide-react"
+import { useState } from "react"
+
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Slider } from "@/components/ui/slider"
+import { Input } from "@/components/ui/input"
 
 export default function CarsPage() {
+  const [priceRange, setPriceRange] = useState([0, 300000])
+  
+
   const cars = [
     {
       id: 1,
       make: "Mercedes-Benz",
       model: "AMG GT",
-      year: 2023,
       price: 142995,
-      mileage: 1200,
-      image: "/images/vehicles/vehicle1.PNG",
-      fuel: "Hybrid",
-      transmission: "Automatic",
-      color: "white  ",
-      tag: "Featured",
+      image: "/images/trending/trending car1.PNG",
+      rating: 4.9,
+      reviews: 28,
+      year: 2023,
+      mileage: 0,
+      condition: "New",
     },
     {
       id: 2,
-      make: "Porsche",
-      model: "911 Turbo S",
+      make: "Audi",
+      model: "e-tron GT",
+      price: 106995,
+      image: "/images/trending/trending car2.PNG",
+      rating: 4.8,
+      reviews: 19,
       year: 2023,
-      price: 215000,
-      mileage: 850,
-      image: "/images/vehicles/vehicle2.PNG",
-      fuel: "Gasoline",
-      transmission: "PDK",
-      color: "Black",
-      tag: "New Arrival",
+      mileage: 0,
+      condition: "New",
+      tag: "Electric",
     },
     {
       id: 3,
-      make: "Bentley",
-      model: "Continental GT",
+      make: "Porsche",
+      model: "911 Turbo S",
+      price: 216995,
+      image: "/images/trending/trending car3.PNG",
+      rating: 5.0,
+      reviews: 32,
       year: 2023,
-      price: 242995,
-      mileage: 500,
-      image: "/images/vehicles/vehicle3.PNG",
-      fuel: "Gasoline",
-      transmission: "Automatic",
-      color: "Black",
+      mileage: 0,
+      condition: "New",
     },
     {
       id: 4,
-      make: "Aston Martin",
-      model: "DB11",
+      make: "BMW",
+      model: "M8 Competition",
+      price: 164295,
+      image: "/images/luxury/luxury vehicles1.PNG",
+      rating: 4.9,
+      reviews: 24,
       year: 2022,
-      price: 205999,
-      mileage: 1500,
-      image: "/images/vehicles/vehicle4.PNG",
-      fuel: "Gasoline",
-      transmission: "Automatic",
-      color: "white",
+      mileage: 5200,
+      condition: "Used",
     },
     {
       id: 5,
-      make: "Lamborghini",
-      model: "Huracán",
-      year: 2023,
-      price: 332990,
-      mileage: 200,
-      image: "/images/vehicles/vehicle5.PNG",
-      fuel: "Gasoline",
-      transmission: "Automatic",
-      color: "Verde Mantis",
-      tag: "Limited",
+      make: "Ferrari",
+      model: "488 GTB",
+      price: 189750,
+      image: "/images/sports/sports vehicles1.PNG",
+      rating: 4.7,
+      reviews: 18,
+      year: 2021,
+      mileage: 8500,
+      condition: "Used",
     },
     {
       id: 6,
-      make: "Ferrari",
-      model: "Roma",
-      year: 2022,
-      price: 249995,
-      mileage: 1200,
-      image: "/images/vehicles/vehicle6.PNG",
-      fuel: "Gasoline",
-      transmission: "Automatic",
-      color: "Black",
+      make: "Tesla",
+      model: "Model S Plaid",
+      price: 124990,
+      image: "/images/eletric/eletric.PNG",
+      rating: 4.8,
+      reviews: 42,
+      year: 2023,
+      mileage: 0,
+      condition: "New",
+      tag: "Electric",
     },
   ]
 
@@ -102,315 +110,230 @@ export default function CarsPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <SiteHeader />
       <main className="flex-1">
-        {/* Hero Banner */}
-        <section className="relative h-[60vh] overflow-hidden">
+        {/* Hero Banner Section */}
+        <section className="relative w-full h-[60vh] overflow-hidden">
           <Image
             src="/images/discover/discover.PNG"
             alt="Luxury car collection"
             fill
             className="object-cover"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent flex items-center">
             <div className="container px-4 md:px-6 mx-auto">
-              <div className="max-w-lg space-y-4">
+              <div className="max-w-2xl space-y-6">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-                  Discover Your <span className="text-cyan-400">Perfect</span> Ride
+                  Find Your Perfect <span className="text-cyan-400">Drive</span>
                 </h1>
-                <p className="text-white/80">
-                  Browse our extensive collection of premium vehicles curated for the discerning driver.
+                <p className="text-lg text-white/90 font-light leading-relaxed tracking-wide backdrop-blur-sm bg-black/10 p-3 rounded-lg border-l-2 border-cyan-400">
+                  Browse our extensive collection of premium vehicles, from sports cars to luxury sedans and electric innovations.
                 </p>
+                <div className="flex flex-col sm:flex-row gap-4 bg-white/10 backdrop-blur-md rounded-xl p-4">
+                  <Input 
+                    placeholder="Search by make, model, or keyword" 
+                    className="flex-1 bg-white/20 border-0 placeholder:text-white/60 text-white"
+                  />
+                  <Button className="bg-white text-cyan-600 hover:bg-white/90">
+                    <Search className="h-4 w-4 mr-2" /> Search
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Search and Filter Section */}
-        <section className="py-8 bg-white border-b">
+        {/* Filters and Results */}
+        <section className="py-12">
           <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <Input
-                    type="search"
-                    placeholder="Search by make, model, or keywords"
-                    className="w-full pl-10 h-12 rounded-full border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
-                  />
-                </div>
+            <div className="flex justify-between items-end mb-12">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight mb-2">Browse Our Inventory</h2>
+                <p className="text-gray-500">Discover your perfect ride from our curated collection</p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="outline" className="h-12 rounded-full border-gray-200 flex gap-2">
-                      <Filter className="h-5 w-5" /> Filters
+            </div>
+            
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Filters Sidebar */}
+              <div className="lg:w-1/4">
+                <div className="sticky top-20 bg-white rounded-xl border p-6 shadow-sm">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-bold">Filters</h2>
+                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">
+                      Reset All
                     </Button>
-                  </SheetTrigger>
-                  <SheetContent className="w-[300px] sm:w-[400px] overflow-y-auto">
-                    <SheetHeader>
-                      <SheetTitle>Filter Vehicles</SheetTitle>
-                      <SheetDescription>Narrow down your search with specific criteria</SheetDescription>
-                    </SheetHeader>
-                    <div className="grid gap-6 py-6">
-                      <div className="space-y-2">
-                        <h3 className="text-sm font-medium text-cyan-600">Price Range</h3>
-                        <div className="grid grid-cols-2 gap-2">
-                          <Input type="number" placeholder="Min Price" className="rounded-full border-gray-200" />
-                          <Input type="number" placeholder="Max Price" className="rounded-full border-gray-200" />
+                  </div>
+
+                  <Accordion type="single" collapsible className="space-y-4">
+                    <AccordionItem value="price" className="border-b">
+                      <AccordionTrigger className="text-base font-medium">Price Range</AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-4 pt-2">
+                          <Slider 
+                            defaultValue={[0, 300000]} 
+                            max={500000} 
+                            step={5000}
+                            onValueChange={(value) => setPriceRange(value)}
+                          />
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm">${priceRange[0].toLocaleString()}</span>
+                            <span className="text-sm">${priceRange[1].toLocaleString()}</span>
+                          </div>
                         </div>
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-sm font-medium text-cyan-600">Make</h3>
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="make" className="border-b">
+                      <AccordionTrigger className="text-base font-medium">Make</AccordionTrigger>
+                      <AccordionContent>
                         <div className="space-y-2">
-                          {["Mercedes-Benz", "Porsche", "Bentley", "Aston Martin", "Lamborghini", "Ferrari"].map(
-                            (make) => (
-                              <div key={make} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={`make-${make}`}
-                                  className="rounded-sm data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
-                                />
-                                <label htmlFor={`make-${make}`} className="text-sm">
-                                  {make}
-                                </label>
-                              </div>
-                            ),
-                          )}
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-sm font-medium text-cyan-600">Year</h3>
-                        <div className="grid grid-cols-2 gap-2">
-                          <Select>
-                            <SelectTrigger className="rounded-full border-gray-200">
-                              <SelectValue placeholder="Min Year" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {[2018, 2019, 2020, 2021, 2022, 2023].map((year) => (
-                                <SelectItem key={year} value={year.toString()}>
-                                  {year}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <Select>
-                            <SelectTrigger className="rounded-full border-gray-200">
-                              <SelectValue placeholder="Max Year" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {[2018, 2019, 2020, 2021, 2022, 2023].map((year) => (
-                                <SelectItem key={year} value={year.toString()}>
-                                  {year}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-sm font-medium text-cyan-600">Body Type</h3>
-                        <div className="space-y-2">
-                          {["Sedan", "Coupe", "Convertible", "SUV", "Supercar", "Grand Tourer"].map((body) => (
-                            <div key={body} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`body-${body}`}
-                                className="rounded-sm data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
-                              />
-                              <label htmlFor={`body-${body}`} className="text-sm">
-                                {body}
+                          {["Audi", "BMW", "Ferrari", "Mercedes-Benz", "Porsche", "Tesla"].map((make) => (
+                            <div key={make} className="flex items-center space-x-2">
+                              <Checkbox id={`make-${make}`} />
+                              <label htmlFor={`make-${make}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {make}
                               </label>
                             </div>
                           ))}
                         </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2 mt-4">
-                      <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700">
-                        Apply Filters
-                      </Button>
-                      <Button variant="outline" className="rounded-full border-gray-200">
-                        Reset
-                      </Button>
-                    </div>
-                  </SheetContent>
-                </Sheet>
-                <Select>
-                  <SelectTrigger className="h-12 rounded-full border-gray-200 min-w-[180px]">
-                    <SelectValue placeholder="Sort By" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="price-low">Price: Low to High</SelectItem>
-                    <SelectItem value="price-high">Price: High to Low</SelectItem>
-                    <SelectItem value="year-new">Year: Newest First</SelectItem>
-                    <SelectItem value="mileage-low">Mileage: Low to High</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button className="h-12 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700">
-                  <Sliders className="h-5 w-5 mr-2" /> Advanced
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+                      </AccordionContent>
+                    </AccordionItem>
 
-        {/* Results Section */}
-        <section className="py-12">
-          <div className="container px-4 md:px-6 mx-auto">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold">6 vehicles found</h2>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">View:</span>
-                <Button variant="outline" size="sm" className="rounded-full border-gray-200 px-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4"
-                  >
-                    <rect x="3" y="3" width="7" height="7" />
-                    <rect x="14" y="3" width="7" height="7" />
-                    <rect x="14" y="14" width="7" height="7" />
-                    <rect x="3" y="14" width="7" height="7" />
-                  </svg>
-                  <span className="sr-only">Grid view</span>
-                </Button>
-                <Button variant="outline" size="sm" className="rounded-full border-gray-200 px-3">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4"
-                  >
-                    <line x1="21" y1="6" x2="3" y2="6" />
-                    <line x1="21" y1="12" x2="3" y2="12" />
-                    <line x1="21" y1="18" x2="3" y2="18" />
-                  </svg>
-                  <span className="sr-only">List view</span>
-                </Button>
-              </div>
-            </div>
+                    <AccordionItem value="condition" className="border-b">
+                      <AccordionTrigger className="text-base font-medium">Condition</AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-2">
+                          {["New", "Used", "Certified Pre-Owned"].map((condition) => (
+                            <div key={condition} className="flex items-center space-x-2">
+                              <Checkbox id={`condition-${condition}`} />
+                              <label htmlFor={`condition-${condition}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {condition}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {cars.map((car) => (
-                <Card
-                  key={car.id}
-                  className="group overflow-hidden border-0 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <div className="relative">
-                    <div className="aspect-[4/3] overflow-hidden">
-                      <Image
-                        src={car.image || "/placeholder.svg"}
-                        alt={`${car.year} ${car.make} ${car.model}`}
-                        width={400}
-                        height={300}
-                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                    {car.tag && (
-                      <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
-                        {car.tag}
-                      </div>
-                    )}
+                    <AccordionItem value="type" className="border-b">
+                      <AccordionTrigger className="text-base font-medium">Vehicle Type</AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-2">
+                          {["Sports", "Luxury", "SUV", "Electric", "Convertible"].map((type) => (
+                            <div key={type} className="flex items-center space-x-2">
+                              <Checkbox id={`type-${type}`} />
+                              <label htmlFor={`type-${type}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                {type}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+
+                  <Button className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
+                    <Filter className="h-4 w-4 mr-2" /> Apply Filters
+                  </Button>
+                </div>
+              </div>
+
+              {/* Results */}
+              <div className="lg:w-3/4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                  <p className="text-gray-500 mb-4 sm:mb-0">Showing <span className="font-medium text-gray-900">{cars.length}</span> vehicles</p>
+                  <div className="flex items-center">
+                    <span className="text-sm text-gray-500 mr-2">Sort by:</span>
+                    <Select defaultValue="featured">
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Sort by" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="featured">Featured</SelectItem>
+                        <SelectItem value="price-low">Price: Low to High</SelectItem>
+                        <SelectItem value="price-high">Price: High to Low</SelectItem>
+                        <SelectItem value="newest">Newest First</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="text-xl font-bold">
-                          {car.make} {car.model}
-                        </h3>
-                        <p className="text-gray-500 text-sm">{car.year}</p>
-                      </div>
-                      <p className="text-lg font-bold">${car.price.toLocaleString()}</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm text-gray-500 mt-4 mb-6">
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium">Mileage:</span>
-                        <span>{car.mileage.toLocaleString()} mi</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium">Fuel:</span>
-                        <span>{car.fuel}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium">Trans:</span>
-                        <span>{car.transmission}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium">Color:</span>
-                        <span>{car.color}</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <Button
-                        variant="outline"
-                        className="rounded-full border-gray-200 hover:border-cyan-500 hover:text-cyan-500"
-                      >
-                        Add to Compare
-                      </Button>
-                      <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700">
-                        View Details
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                </div>
 
-            <Pagination className="mt-12">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" className="rounded-full border-gray-200" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    isActive
-                    className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white border-0"
-                  >
-                    1
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" className="rounded-full border-gray-200">
-                    2
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" className="rounded-full border-gray-200">
-                    3
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis className="text-gray-400" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" className="rounded-full border-gray-200" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        </section>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {cars.map((car) => (
+                    <Card
+                      key={car.id}
+                      className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
+                    >
+                      <div className="relative">
+                        <div className="aspect-[4/3] overflow-hidden">
+                          <Image
+                            src={car.image || "/placeholder.svg"}
+                            alt={`${car.make} ${car.model}`}
+                            width={600}
+                            height={400}
+                            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                          />
+                        </div>
+                        {car.tag && (
+                          <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
+                            {car.tag}
+                          </div>
+                        )}
+                        <div className="absolute top-4 left-4 px-3 py-1 text-xs font-semibold bg-black/70 text-white rounded-full">
+                          {car.condition}
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h3 className="text-xl font-bold">
+                              {car.make} {car.model}
+                            </h3>
+                            <p className="text-gray-500 text-sm">{car.year} • {car.mileage.toLocaleString()} miles</p>
+                          </div>
+                          <div className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
+                            <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
+                            <span className="text-xs font-medium">
+                              {car.rating} ({car.reviews})
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center mt-4">
+                          <p className="text-2xl font-bold">
+                            <span className="text-sm text-gray-500 font-normal">Starting at</span>
+                            <br />
+                            ${car.price.toLocaleString()}
+                          </p>
+                          <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
+                            View Details
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
 
-        {/* Call to Action */}
-        <section className="py-16 bg-gradient-to-r from-cyan-500 to-purple-600 text-white">
-          <div className="container px-4 md:px-6 mx-auto text-center">
-            <div className="max-w-2xl mx-auto space-y-6">
-              <h2 className="text-3xl font-bold tracking-tight">Can't Find What You're Looking For?</h2>
-              <p className="text-white/80">
-                Our inventory is constantly updating. Let us know what you're looking for and we'll notify you when it
-                arrives.
-              </p>
-              <Button className="rounded-full bg-white text-cyan-600 hover:bg-white/90 px-8">Request a Vehicle</Button>
+                {/* Pagination */}
+                <div className="flex justify-center mt-12">
+                  <div className="flex items-center space-x-2">
+                    <Button variant="outline" size="icon" disabled>
+                      <ChevronDown className="h-4 w-4 rotate-90" />
+                    </Button>
+                    <Button variant="outline" size="sm" className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white border-0">
+                      1
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      2
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      3
+                    </Button>
+                    <Button variant="outline" size="icon">
+                      <ChevronDown className="h-4 w-4 -rotate-90" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
