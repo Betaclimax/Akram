@@ -10,14 +10,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
 
-// Define the props type to match Next.js's expectations
 type CarPageProps = {
   params: Promise<{ id: string }>;
 };
 
-// Generate metadata for SEO
 export async function generateMetadata({ params }: CarPageProps): Promise<Metadata> {
-  const resolvedParams = await params; // Resolve the params Promise
+  const resolvedParams = await params;
   const car = {
     id: resolvedParams.id,
     make: "BMW",
@@ -31,12 +29,10 @@ export async function generateMetadata({ params }: CarPageProps): Promise<Metada
   };
 }
 
-// The page component, now async to handle the params Promise
 export default async function CarPage({ params }: CarPageProps) {
-  const resolvedParams = await params; // Resolve the params Promise
+  const resolvedParams = await params;
   const { id } = resolvedParams;
 
-  // Simulated car data
   const car = {
     id: id,
     make: "BMW",
@@ -511,9 +507,13 @@ export default async function CarPage({ params }: CarPageProps) {
   );
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return [
     { id: '1' },
     { id: '2' },
+    { id: '3' },
+    { id: '4' },
+    { id: '5' },
+    { id: '6' },
   ];
 }

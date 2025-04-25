@@ -372,33 +372,50 @@ export default function CarsPage() {
                       key={car.id}
                       className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
                     >
-                      <div className="relative">
-                        <div className="aspect-[4/3] overflow-hidden">
-                          <Image
-                            src={car.image || "/placeholder.svg"}
-                            alt={`${car.make} ${car.model}`}
-                            width={600}
-                            height={400}
-                            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                          />
-                        </div>
-                        {car.tag && (
-                          <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
-                            {car.tag}
+                      <Link href={`/cars/${car.id}`} className="block">
+                        <div className="relative">
+                          <div className="aspect-[4/3] overflow-hidden">
+                            <Image
+                              src={car.image || "/placeholder.svg"}
+                              alt={`${car.make} ${car.model}`}
+                              width={600}
+                              height={400}
+                              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                            />
                           </div>
-                        )}
-                        <div className="absolute top-4 left-4 px-3 py-1 text-xs font-semibold bg-black/70 text-white rounded-full">
-                          {car.condition}
+                          {car.tag && (
+                            <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
+                              {car.tag}
+                            </div>
+                          )}
+                          <div className="absolute top-4 left-4 px-3 py-1 text-xs font-semibold bg-black/70 text-white rounded-full">
+                            {car.condition}
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
                         </div>
-                        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
-                      </div>
+                      </Link>
                       <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-2">
                           <div>
-                            <h3 className="text-xl font-bold">
-                              {car.make} {car.model}
-                            </h3>
+                            <Link href={`/cars/${car.id}`} className="hover:text-cyan-600 transition-colors">
+                              <h3 className="text-xl font-bold">
+                                {car.make} {car.model}
+                              </h3>
+                            </Link>
                             <p className="text-gray-500 text-sm">{car.year} • {car.mileage.toLocaleString()} miles</p>
+                            
+                            {/* Additional details */}
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                {car.fuelType}
+                              </span>
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                Automatic
+                              </span>
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                {car.condition === "New" ? "0 owners" : "1-2 owners"}
+                              </span>
+                            </div>
                           </div>
                           <div className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
                             <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
@@ -407,15 +424,36 @@ export default function CarsPage() {
                             </span>
                           </div>
                         </div>
+                        
+                        {/* Features list */}
+                        <div className="mt-3 mb-4">
+                          <ul className="text-xs text-gray-500 space-y-1">
+                            <li className="flex items-center">
+                              <div className="w-1 h-1 rounded-full bg-cyan-500 mr-2"></div>
+                              Premium Sound System
+                            </li>
+                            <li className="flex items-center">
+                              <div className="w-1 h-1 rounded-full bg-cyan-500 mr-2"></div>
+                              Navigation System
+                            </li>
+                            <li className="flex items-center">
+                              <div className="w-1 h-1 rounded-full bg-cyan-500 mr-2"></div>
+                              {car.fuelType === "Electric" ? "Fast Charging" : "Leather Interior"}
+                            </li>
+                          </ul>
+                        </div>
+                        
                         <div className="flex justify-between items-center mt-4">
-                          <p className="text-2xl font-bold">
+                          <div>
                             <span className="text-sm text-gray-500 font-normal">Starting at</span>
-                            <br />
-                            ${car.price.toLocaleString()}
-                          </p>
-                          <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
-                            View Details
-                          </Button>
+                            <p className="text-2xl font-bold">${car.price.toLocaleString()}</p>
+                            <span className="text-xs text-gray-500">Est. ${Math.round(car.price / 60).toLocaleString()}/mo</span>
+                          </div>
+                          <Link href={`/cars/${car.id}`}>
+                            <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
+                              View Details
+                            </Button>
+                          </Link>
                         </div>
                       </CardContent>
                     </Card>
@@ -442,8 +480,7 @@ export default function CarsPage() {
                     </Button>
                   </div>
                 </div>
-              </div>
-            </div>
+              </div>            </div>
           </div>
         </section>
       </main>
