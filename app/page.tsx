@@ -268,7 +268,7 @@ export default function Home() {
                   ].map((car) => (
                     <Card
                       key={car.id}
-                      className="group overflow-hidden border-0 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+                      className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
                     >
                       <div className="relative">
                         <div className="aspect-[4/3] overflow-hidden">
@@ -302,7 +302,11 @@ export default function Home() {
                           </div>
                         </div>
                         <div className="flex justify-between items-center mt-4">
-                          <p className="text-2xl font-bold">${car.price.toLocaleString()}</p>
+                          <p className="text-2xl font-bold">
+                            <span className="text-sm text-gray-500 font-normal">Starting at</span>
+                            <br />
+                            ${car.price.toLocaleString()}
+                          </p>
                           <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
                             View Details
                           </Button>
@@ -315,16 +319,186 @@ export default function Home() {
 
               <TabsContent value="new" className="mt-0">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <Card className="text-center p-12 col-span-full">
-                    <p className="text-gray-500">Switch to the "All" tab to see example vehicles</p>
+                  <Card
+                    className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
+                  >
+                    <div className="relative">
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <Image
+                          src="/images/trending/trending car3.PNG"
+                          alt="Porsche 911 Turbo S"
+                          width={600}
+                          height={400}
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
+                        New
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="text-xl font-bold">
+                            Porsche 911 Turbo S
+                          </h3>
+                        </div>
+                        <div className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
+                          <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
+                          <span className="text-xs font-medium">
+                            5.0 (32)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center mt-4">
+                        <p className="text-2xl font-bold">
+                          <span className="text-sm text-gray-500 font-normal">Starting at</span>
+                          <br />
+                          $216,995
+                        </p>
+                        <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
+                          View Details
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card
+                    className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
+                  >
+                    <div className="relative">
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <Image
+                          src="/images/luxury/luxury vehicles1.PNG"
+                          alt="BMW M8 Competition"
+                          width={600}
+                          height={400}
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
+                        New
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="text-xl font-bold">
+                            BMW M8 Competition
+                          </h3>
+                        </div>
+                        <div className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
+                          <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
+                          <span className="text-xs font-medium">
+                            4.9 (24)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center mt-4">
+                        <p className="text-2xl font-bold">
+                          <span className="text-sm text-gray-500 font-normal">Starting at</span>
+                          <br />
+                          $164,295
+                        </p>
+                        <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
+                          View Details
+                        </Button>
+                      </div>
+                    </CardContent>
                   </Card>
                 </div>
               </TabsContent>
 
               <TabsContent value="used" className="mt-0">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <Card className="text-center p-12 col-span-full">
-                    <p className="text-gray-500">Switch to the "All" tab to see example vehicles</p>
+                  <Card
+                    className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
+                  >
+                    <div className="relative">
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <Image
+                          src="/images/trending/trending car1.PNG"
+                          alt="Mercedes-Benz AMG GT"
+                          width={600}
+                          height={400}
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
+                        Used
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="text-xl font-bold">
+                            Mercedes-Benz AMG GT
+                          </h3>
+                        </div>
+                        <div className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
+                          <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
+                          <span className="text-xs font-medium">
+                            4.9 (28)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center mt-4">
+                        <p className="text-2xl font-bold">
+                          <span className="text-sm text-gray-500 font-normal">Starting at</span>
+                          <br />
+                          $142,995
+                        </p>
+                        <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
+                          View Details
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card
+                    className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
+                  >
+                    <div className="relative">
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <Image
+                          src="/images/sports/sports vehicles1.PNG"
+                          alt="Ferrari 488 GTB"
+                          width={600}
+                          height={400}
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
+                        Used
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    </div>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h3 className="text-xl font-bold">
+                            Ferrari 488 GTB
+                          </h3>
+                        </div>
+                        <div className="flex items-center bg-gray-100 px-2 py-1 rounded-full">
+                          <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
+                          <span className="text-xs font-medium">
+                            4.7 (18)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center mt-4">
+                        <p className="text-2xl font-bold">
+                          <span className="text-sm text-gray-500 font-normal">Starting at</span>
+                          <br />
+                          $189,750
+                        </p>
+                        <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
+                          View Details
+                        </Button>
+                      </div>
+                    </CardContent>
                   </Card>
                 </div>
               </TabsContent>
