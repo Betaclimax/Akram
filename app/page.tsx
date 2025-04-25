@@ -569,7 +569,7 @@ export default function Home() {
         </section>
 
         {/* Newsletter */}
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-gray-100">
           <div className="container px-4 md:px-6 mx-auto">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl font-bold tracking-tight mb-4">Stay Updated</h2>
@@ -579,10 +579,11 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="yourname@example.com"
                   className="flex-1 px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  aria-label="Email address"
                 />
-                <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white rounded-full px-8">
+                <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white rounded-full px-4 sm:px-8 py-3 transition-all duration-300 hover:shadow-md">
                   Subscribe
                 </Button>
               </div>
