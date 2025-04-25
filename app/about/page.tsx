@@ -246,21 +246,21 @@ export default function AboutPage() {
                 {
                   quote:
                     "The most exceptional car buying experience I've ever had. The team at Akram Import and Export went above and beyond to find me the perfect Porsche 911.",
-                  image: "/images/avatar/avatarman2.PNG",
+                  image: "/images/avatar/avatarman2.png",
                   author: "Yacine",
                   rating: 5,
                 },
                 {
                   quote:
                     "From the moment I walked in, I knew this wasn't your typical dealership. The attention to detail and personalized service is unmatched.",
-                  image: "/images/avatar/avatarwoman.PNG",
+                  image: "/images/avatar/avatarwoman.png",
                   author: "Amel",
                   rating: 5,
                 },
                 {
                   quote:
                     "I've purchased three vehicles from Akram Import and Export over the years, and each experience has been better than the last. They truly understand luxury.",
-                  image: "/images/avatar/avatarman3.PNG",
+                  image: "/images/avatar/avatarman3.png",
                   author: "Bilal",
                   rating: 5,
                 },
