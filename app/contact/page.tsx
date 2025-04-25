@@ -54,7 +54,7 @@ export default function ContactPage() {
         {/* Hero Section */}
         <section className="relative h-[60vh] overflow-hidden">
           <Image
-            src="/images/contact/contact.PNG"
+            src="/images/contact/contact.png"
             alt="Contact AUTOVOGUE"
             fill
             className="object-cover"
@@ -213,7 +213,7 @@ export default function ContactPage() {
                 </p>
                 <div className="aspect-[4/3] rounded-2xl overflow-hidden">
                   <Image
-                    src="/images/contact/question.PNG"
+                    src="/images/contact/question.png"
                     alt="AUTOVOGUE contact team"
                     width={800}
                     height={600}

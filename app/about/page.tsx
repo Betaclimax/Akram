@@ -15,7 +15,7 @@ export default function AboutPage() {
         {/* Hero Section */}
         <section className="relative h-[60vh] overflow-hidden">
           <Image
-            src="/images/about/about.PNG"
+            src="/images/about/about.png"
             alt="Luxury car showroom"
             fill
             className="object-cover"
@@ -55,7 +55,7 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="aspect-[4/3] rounded-2xl overflow-hidden">
                   <Image
-                    src="/images/about/about2.PNG"
+                    src="/images/about/about2.png"
                     alt="AUTOVOGUE showroom"
                     width={800}
                     height={600}
