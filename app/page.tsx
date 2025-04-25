@@ -12,28 +12,60 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Home() {
   const slides = [
-    { src: "/images/car4.PNG", alt: "2023 Porsche 911" },
-    { src: "/images/car5.PNG", alt: "2023 Mercedes-Benz AMG GT" },
-    { src: "/images/car6.PNG", alt: "2023 Audi e-tron GT" },
+    { 
+      src: "/images/car4.PNG", 
+      alt: "2023 Porsche 911",
+      heading: "Ride with Confidence"
+    },
+    { 
+      src: "/images/car5.PNG", 
+      alt: "2023 Mercedes-Benz AMG GT",
+      heading: "Upgrade Your Driving Experience"
+    },
+    { 
+      src: "/images/car6.PNG", 
+      alt: "2023 Audi e-tron GT",
+      heading: "Discover a New Level of Comfort"
+    },
   ]
   const [currentSlide, setCurrentSlide] = useState(0)
-    useEffect(() => {
-      const interval = setInterval(() => {
+  const [fadeIn, setFadeIn] = useState(true)
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFadeIn(false)
+      setTimeout(() => {
         setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
-      }, 5000)
-      return () => clearInterval(interval)
-    }, [slides.length])
+        setFadeIn(true)
+      }, 500)
+      
+    }, 7000)
+    return () => clearInterval(interval)
+  }, [slides.length])
 
   const goToPreviousSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+    setFadeIn(false)
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+      setFadeIn(true)
+    }, 500)
   }
 
   const goToNextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+    setFadeIn(false)
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+      setFadeIn(true)
+    }, 500)
   }
 
   const goToSlide = (index: number) => {
-    setCurrentSlide(index)
+    if (index === currentSlide) return
+    setFadeIn(false)
+    setTimeout(() => {
+      setCurrentSlide(index)
+      setFadeIn(true)
+    }, 500)
   }
 
   return (
@@ -55,10 +87,14 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent flex items-center">
                   <div className="container px-4 md:px-6 mx-auto">
                     <div className="max-w-lg space-y-6">
-                      <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white">
-                        Ride <span className="text-cyan-400">with Confidence</span>
+                      <h1 
+                        className={`text-4xl md:text-5xl font-bold tracking-tight text-white transition-opacity duration-500 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+                      >
+                        {slide.heading} <span className="text-cyan-400">for You</span>
                       </h1>
-                      <p className="text-lg text-white/80">
+                      <p 
+                        className={`text-lg text-white/90 font-light leading-relaxed tracking-wide transition-opacity duration-500 ${fadeIn ? 'opacity-100' : 'opacity-0'} backdrop-blur-sm bg-black/10 p-3 rounded-lg border-l-2 border-cyan-400`}
+                      >
                         At our car shop, we are committed to providing our customers with exceptional service and competitive pricing.
                       </p>
                       <div className="flex flex-wrap gap-4">
