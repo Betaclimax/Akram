@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { SiteHeader } from "@/components/header"
 import { SiteFooter } from "@/components/footer"
-import { ChevronDown, Filter, Search, Star } from "lucide-react"
+import { ChevronDown, Filter, Search, Star, X } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -24,9 +24,18 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { Input } from "@/components/ui/input"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 export default function CarsPage() {
   const [priceRange, setPriceRange] = useState([0, 300000])
+  const [filtersApplied, setFiltersApplied] = useState(false)
   
 
   const cars = [
@@ -41,6 +50,7 @@ export default function CarsPage() {
       year: 2023,
       mileage: 0,
       condition: "New",
+      fuelType: "Gasoline",
     },
     {
       id: 2,
@@ -54,6 +64,7 @@ export default function CarsPage() {
       mileage: 0,
       condition: "New",
       tag: "Electric",
+      fuelType: "Electric",
     },
     {
       id: 3,
@@ -66,6 +77,7 @@ export default function CarsPage() {
       year: 2023,
       mileage: 0,
       condition: "New",
+      fuelType: "Gasoline",
     },
     {
       id: 4,
@@ -78,6 +90,7 @@ export default function CarsPage() {
       year: 2022,
       mileage: 5200,
       condition: "Used",
+      fuelType: "Gasoline",
     },
     {
       id: 5,
@@ -90,6 +103,7 @@ export default function CarsPage() {
       year: 2021,
       mileage: 8500,
       condition: "Used",
+      fuelType: "Gasoline",
     },
     {
       id: 6,
@@ -103,8 +117,129 @@ export default function CarsPage() {
       mileage: 0,
       condition: "New",
       tag: "Electric",
+      fuelType: "Electric",
     },
   ]
+
+  const clearFilters = () => {
+    setPriceRange([0, 300000])
+    setFiltersApplied(false)
+    // Reset other filter states here
+  }
+
+  const applyFilters = () => {
+    setFiltersApplied(true)
+    // Apply filter logic here
+  }
+
+  // Filter component that's shared between desktop and mobile
+  const FilterControls = ({ onApply = () => {}, onClear = () => {} }) => (
+    <>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold">Filters</h2>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="text-gray-500 hover:text-gray-900 rounded-full border-gray-300"
+          onClick={onClear}
+        >
+          <X className="h-4 w-4 mr-2" /> Clear All
+        </Button>
+      </div>
+
+      <Accordion type="single" collapsible className="space-y-4">
+        <AccordionItem value="price" className="border-b">
+          <AccordionTrigger className="text-base font-medium">Price Range</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-4 pt-2">
+              <Slider 
+                defaultValue={[0, 300000]} 
+                max={500000} 
+                step={5000}
+                value={priceRange}
+                onValueChange={(value) => setPriceRange(value)}
+              />
+              <div className="flex items-center justify-between">
+                <span className="text-sm">${priceRange[0].toLocaleString()}</span>
+                <span className="text-sm">${priceRange[1].toLocaleString()}</span>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="condition" className="border-b">
+          <AccordionTrigger className="text-base font-medium">Condition</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              {["New", "Used", "Certified Pre-Owned"].map((condition) => (
+                <div key={condition} className="flex items-center space-x-2">
+                  <Checkbox id={`condition-${condition}`} />
+                  <label htmlFor={`condition-${condition}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {condition}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="make" className="border-b">
+          <AccordionTrigger className="text-base font-medium">Make</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              {["Audi", "BMW", "Ferrari", "Mercedes-Benz", "Porsche", "Tesla"].map((make) => (
+                <div key={make} className="flex items-center space-x-2">
+                  <Checkbox id={`make-${make}`} />
+                  <label htmlFor={`make-${make}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {make}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="type" className="border-b">
+          <AccordionTrigger className="text-base font-medium">Vehicle Type</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              {["Sports", "Luxury", "SUV", "Electric", "Convertible"].map((type) => (
+                <div key={type} className="flex items-center space-x-2">
+                  <Checkbox id={`type-${type}`} />
+                  <label htmlFor={`type-${type}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {type}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="fuel" className="border-b">
+          <AccordionTrigger className="text-base font-medium">Fuel Type</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              {["Gasoline", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"].map((fuel) => (
+                <div key={fuel} className="flex items-center space-x-2">
+                  <Checkbox id={`fuel-${fuel}`} />
+                  <label htmlFor={`fuel-${fuel}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {fuel}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      <Button 
+        className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white rounded-full"
+        onClick={onApply}
+      >
+        <Filter className="h-4 w-4 mr-2" /> Apply Filters
+      </Button>
+    </>
+  )
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -150,95 +285,69 @@ export default function CarsPage() {
                 <h2 className="text-3xl font-bold tracking-tight mb-2">Browse Our Inventory</h2>
                 <p className="text-gray-500">Discover your perfect ride from our curated collection</p>
               </div>
+              
+              {/* Mobile Filter Button - Only visible on mobile */}
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button className="lg:hidden bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
+                    <Filter className="h-4 w-4 mr-2" /> Filters
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] sm:w-[400px] overflow-y-auto">
+                  <SheetHeader className="mb-4">
+                    <SheetTitle>Filter Vehicles</SheetTitle>
+                    <SheetDescription>
+                      Narrow down your search with these filters
+                    </SheetDescription>
+                  </SheetHeader>
+                  <FilterControls 
+                    onApply={() => {
+                      applyFilters()
+                      document.querySelector('[data-radix-collection-item]')?.click(); 
+                    }}
+                    onClear={clearFilters}
+                  />
+                </SheetContent>
+              </Sheet>
             </div>
             
             <div className="flex flex-col lg:flex-row gap-8">
-              {/* Filters Sidebar */}
-              <div className="lg:w-1/4">
+              {/* Filters Sidebar - Only visible on desktop */}
+              <div className="hidden lg:block lg:w-1/4">
                 <div className="sticky top-20 bg-white rounded-xl border p-6 shadow-sm">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold">Filters</h2>
-                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">
-                      Reset All
-                    </Button>
-                  </div>
-
-                  <Accordion type="single" collapsible className="space-y-4">
-                    <AccordionItem value="price" className="border-b">
-                      <AccordionTrigger className="text-base font-medium">Price Range</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-4 pt-2">
-                          <Slider 
-                            defaultValue={[0, 300000]} 
-                            max={500000} 
-                            step={5000}
-                            onValueChange={(value) => setPriceRange(value)}
-                          />
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm">${priceRange[0].toLocaleString()}</span>
-                            <span className="text-sm">${priceRange[1].toLocaleString()}</span>
-                          </div>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-
-                    <AccordionItem value="make" className="border-b">
-                      <AccordionTrigger className="text-base font-medium">Make</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-2">
-                          {["Audi", "BMW", "Ferrari", "Mercedes-Benz", "Porsche", "Tesla"].map((make) => (
-                            <div key={make} className="flex items-center space-x-2">
-                              <Checkbox id={`make-${make}`} />
-                              <label htmlFor={`make-${make}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                {make}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-
-                    <AccordionItem value="condition" className="border-b">
-                      <AccordionTrigger className="text-base font-medium">Condition</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-2">
-                          {["New", "Used", "Certified Pre-Owned"].map((condition) => (
-                            <div key={condition} className="flex items-center space-x-2">
-                              <Checkbox id={`condition-${condition}`} />
-                              <label htmlFor={`condition-${condition}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                {condition}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-
-                    <AccordionItem value="type" className="border-b">
-                      <AccordionTrigger className="text-base font-medium">Vehicle Type</AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-2">
-                          {["Sports", "Luxury", "SUV", "Electric", "Convertible"].map((type) => (
-                            <div key={type} className="flex items-center space-x-2">
-                              <Checkbox id={`type-${type}`} />
-                              <label htmlFor={`type-${type}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                {type}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-
-                  <Button className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white">
-                    <Filter className="h-4 w-4 mr-2" /> Apply Filters
-                  </Button>
+                  <FilterControls onApply={applyFilters} onClear={clearFilters} />
                 </div>
               </div>
 
               {/* Results */}
-              <div className="lg:w-3/4">
+              <div className="lg:w-3/4 w-full">
+                {/* Active Filters */}
+                {filtersApplied && (
+                  <div className="mb-6 flex flex-wrap gap-2 items-center">
+                    <span className="text-sm font-medium text-gray-700">Active filters:</span>
+                    {priceRange[0] > 0 || priceRange[1] < 300000 ? (
+                      <div className="bg-gray-100 rounded-full px-3 py-1 text-sm flex items-center">
+                        ${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()}
+                        <button 
+                          className="ml-2 text-gray-500 hover:text-gray-700"
+                          onClick={() => setPriceRange([0, 300000])}
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ) : null}
+                    {/* Add other active filters here */}
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="rounded-full border-gray-300 text-sm"
+                      onClick={clearFilters}
+                    >
+                      Clear all
+                    </Button>
+                  </div>
+                )}
+
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                   <p className="text-gray-500 mb-4 sm:mb-0">Showing <span className="font-medium text-gray-900">{cars.length}</span> vehicles</p>
                   <div className="flex items-center">
