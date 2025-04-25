@@ -1,17 +1,44 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ArrowLeft, Check, Heart, Share, Shield, Tag, TrendingUp } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowLeft, Check, Heart, Share, Shield, Tag, TrendingUp } from "lucide-react";
+import type { Metadata } from 'next';
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
-export default function CarDetailsPage({ params }: { params: { id: string } }) {
-  // This would typically come from a database
+
+// Define the props type to match Next.js's expectations
+type CarPageProps = {
+  params: Promise<{ id: string }>;
+};
+
+// Generate metadata for SEO
+export async function generateMetadata({ params }: CarPageProps): Promise<Metadata> {
+  const resolvedParams = await params; // Resolve the params Promise
   const car = {
-    id: params.id,
+    id: resolvedParams.id,
+    make: "BMW",
+    model: "3 Series",
+    year: 2023,
+  };
+
+  return {
+    title: `${car.year} ${car.make} ${car.model} | CarShop`,
+    description: `View details for this ${car.year} ${car.make} ${car.model} with ID ${resolvedParams.id}.`,
+  };
+}
+
+// The page component, now async to handle the params Promise
+export default async function CarPage({ params }: CarPageProps) {
+  const resolvedParams = await params; // Resolve the params Promise
+  const { id } = resolvedParams;
+
+  // Simulated car data
+  const car = {
+    id: id,
     make: "BMW",
     model: "3 Series",
     year: 2023,
@@ -75,7 +102,7 @@ export default function CarDetailsPage({ params }: { params: { id: string } }) {
         image: "/placeholder.svg?height=300&width=400&text=Lexus+IS",
       },
     ],
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -481,5 +508,12 @@ export default function CarDetailsPage({ params }: { params: { id: string } }) {
         </div>
       </footer>
     </div>
-  )
+  );
+}
+
+export async function generateStaticParams() {
+  return [
+    { id: '1' },
+    { id: '2' },
+  ];
 }

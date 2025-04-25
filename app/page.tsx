@@ -50,7 +50,7 @@ export default function Home() {
                   alt={slide.alt}
                   fill
                   className="object-cover"
-                  priority={index === 0} // Only prioritize the first image for performance
+                  priority={index === 0} 
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent flex items-center">
                   <div className="container px-4 md:px-6 mx-auto">

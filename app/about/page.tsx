@@ -46,10 +46,10 @@ export default function AboutPage() {
                 Founded in 2023, Akram Import and Export began with a simple vision: to transform the car buying experience into something truly exceptional. What started as a small boutique dealership has grown into one of Algeria’s most prestigious luxury automotive retailers.
                 </p>
                 <p className="text-gray-600">
-                Our founder,Akram Benseridi believed that purchasing a luxury vehicle should be as refined and exceptional as the cars themselves. This philosophy continues to guide everything we do, from our curated selection process to our white-glove customer service.
+                Our founder, Akram Benseridi believed that purchasing a luxury vehicle should be as refined and exceptional as the cars themselves. This philosophy continues to guide everything we do, from our curated selection process to our white-glove customer service.
                 </p>
                 <p className="text-gray-600">
-                Today,  Akram import and export represents the pinnacle of automotive luxury, offering an unparalleled collection of the world's finest vehicles and a buying experience that is second to none.
+                Today, Akram import and export represents the pinnacle of automotive luxury, offering an unparalleled collection of the world's finest vehicles and a buying experience that is second to none.
                 </p>
               </div>
               <div className="relative">
@@ -140,26 +140,26 @@ export default function AboutPage() {
                 {
                   name: "Akram Benseridi",
                   role: "Founder & CEO",
-                  image: "",
+                  image: "https://via.placeholder.com/400x400?text=Akram+Benseridi",
                   bio: "Akram founded Akram Import and Export with a vision to redefine the car buying experience.",
                 },
                 {
                   name: "Sophia Chen",
                   role: "Chief Operating Officer",
-                  image: "/placeholder.svg?height=400&width=400&text=Sophia+Chen",
+                  image: "https://via.placeholder.com/400x400?text=Sophia+Chen",
                   bio: "Sophia brings her expertise in operations and luxury retail to ensure that every aspect of Akram Import and Export meets our exacting standards.",
                 },
                 {
                   name: "Marcus Williams",
                   role: "Head of Acquisitions",
-                  image: "/placeholder.svg?height=400&width=400&text=Marcus+Williams",
+                  image: "https://via.placeholder.com/400x400?text=Marcus+Williams",
                   bio: "Marcus travels the world to source the most exceptional vehicles for our collection, with an unmatched eye for quality and rarity.",
                 },
               ].map((member, index) => (
                 <div key={index} className="group">
                   <div className="relative overflow-hidden rounded-2xl aspect-square mb-4">
                     <Image
-                      src={member.image || "/placeholder.svg"}
+                      src={member.image}
                       alt={member.name}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -246,21 +246,21 @@ export default function AboutPage() {
                 {
                   quote:
                     "The most exceptional car buying experience I've ever had. The team at Akram Import and Export went above and beyond to find me the perfect Porsche 911.",
-                  image:"/images/avatar/avatarman2.PNG",
+                  image: "/images/avatar/avatarman2.PNG",
                   author: "Yacine",
                   rating: 5,
                 },
                 {
                   quote:
                     "From the moment I walked in, I knew this wasn't your typical dealership. The attention to detail and personalized service is unmatched.",
-                  image:"/images/avatar/avatarwoman.PNG",
+                  image: "/images/avatar/avatarwoman.PNG",
                   author: "Amel",
                   rating: 5,
                 },
                 {
                   quote:
                     "I've purchased three vehicles from Akram Import and Export over the years, and each experience has been better than the last. They truly understand luxury.",
-                  image:"/images/avatar/avatarman3.PNG",
+                  image: "/images/avatar/avatarman3.PNG",
                   author: "Bilal",
                   rating: 5,
                 },
@@ -275,7 +275,13 @@ export default function AboutPage() {
                     <p className="text-gray-600 italic mb-6">"{testimonial.quote}"</p>
                     <div className="flex items-center">
                       <div className="h-12 w-12 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                        <img src={testimonial.image} alt={testimonial.author} className="h-full w-full object-cover rounded-full" />
+                        <Image
+                          src={testimonial.image}
+                          alt={testimonial.author}
+                          width={48}
+                          height={48}
+                          className="h-full w-full object-cover rounded-full"
+                        />
                       </div>
                       <div className="ml-4">
                         <p className="font-bold">{testimonial.author}</p>       
