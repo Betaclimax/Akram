@@ -33,12 +33,35 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
+// Add type definition at the top of the file after imports
+interface Car {
+  id: number;
+  make: string;
+  model: string;
+  price: number;
+  image: string;
+  rating: number;
+  reviews: number;
+  year: number;
+  mileage: number;
+  condition: string;
+  fuelType: string;
+  tag?: string;
+}
+
 export default function CarsPage() {
   const [priceRange, setPriceRange] = useState([0, 300000])
   const [filtersApplied, setFiltersApplied] = useState(false)
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
   
-
-  const cars = [
+  // Add states for all filter types
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([])
+  const [selectedMakes, setSelectedMakes] = useState<string[]>([])
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+  const [selectedFuelTypes, setSelectedFuelTypes] = useState<string[]>([])
+  
+  // Original cars data
+  const originalCars: Car[] = [
     {
       id: 1,
       make: "Mercedes-Benz",
@@ -121,15 +144,42 @@ export default function CarsPage() {
     },
   ]
 
+  // Filtered cars state
+  const [filteredCars, setFilteredCars] = useState<Car[]>(originalCars)
+
   const clearFilters = () => {
     setPriceRange([0, 300000])
+    setSelectedConditions([])
+    setSelectedMakes([])
+    setSelectedTypes([])
+    setSelectedFuelTypes([])
     setFiltersApplied(false)
-    // Reset other filter states here
+    setFilteredCars(originalCars)
   }
 
   const applyFilters = () => {
+    const filtered = originalCars.filter(car => {
+      // Price Range Filter
+      const meetsPrice = car.price >= priceRange[0] && car.price <= priceRange[1]
+      
+      // Condition Filter
+      const meetsCondition = selectedConditions.length === 0 || selectedConditions.includes(car.condition)
+      
+      // Make Filter
+      const meetsMake = selectedMakes.length === 0 || selectedMakes.includes(car.make)
+      
+      // Fuel Type Filter
+      const meetsFuelType = selectedFuelTypes.length === 0 || selectedFuelTypes.includes(car.fuelType)
+      
+      // Type Filter (assuming car.tag represents the type)
+      const meetsType = selectedTypes.length === 0 || (car.tag && selectedTypes.includes(car.tag))
+      
+      return meetsPrice && meetsCondition && meetsMake && meetsFuelType && meetsType
+    })
+
+    setFilteredCars(filtered)
     setFiltersApplied(true)
-    // Apply filter logic here
+    setIsSheetOpen(false)
   }
 
   // Filter component that's shared between desktop and mobile
@@ -173,7 +223,17 @@ export default function CarsPage() {
             <div className="space-y-2">
               {["New", "Used", "Certified Pre-Owned"].map((condition) => (
                 <div key={condition} className="flex items-center space-x-2">
-                  <Checkbox id={`condition-${condition}`} />
+                  <Checkbox 
+                    id={`condition-${condition}`}
+                    checked={selectedConditions.includes(condition)}
+                    onCheckedChange={(checked) => {
+                      setSelectedConditions(prev => 
+                        checked 
+                          ? [...prev, condition]
+                          : prev.filter(c => c !== condition)
+                      )
+                    }}
+                  />
                   <label htmlFor={`condition-${condition}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     {condition}
                   </label>
@@ -189,7 +249,17 @@ export default function CarsPage() {
             <div className="space-y-2">
               {["Audi", "BMW", "Ferrari", "Mercedes-Benz", "Porsche", "Tesla"].map((make) => (
                 <div key={make} className="flex items-center space-x-2">
-                  <Checkbox id={`make-${make}`} />
+                  <Checkbox 
+                    id={`make-${make}`}
+                    checked={selectedMakes.includes(make)}
+                    onCheckedChange={(checked) => {
+                      setSelectedMakes(prev => 
+                        checked 
+                          ? [...prev, make]
+                          : prev.filter(m => m !== make)
+                      )
+                    }}
+                  />
                   <label htmlFor={`make-${make}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     {make}
                   </label>
@@ -205,7 +275,17 @@ export default function CarsPage() {
             <div className="space-y-2">
               {["Sports", "Luxury", "SUV", "Electric", "Convertible"].map((type) => (
                 <div key={type} className="flex items-center space-x-2">
-                  <Checkbox id={`type-${type}`} />
+                  <Checkbox 
+                    id={`type-${type}`}
+                    checked={selectedTypes.includes(type)}
+                    onCheckedChange={(checked) => {
+                      setSelectedTypes(prev => 
+                        checked 
+                          ? [...prev, type]
+                          : prev.filter(t => t !== type)
+                      )
+                    }}
+                  />
                   <label htmlFor={`type-${type}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     {type}
                   </label>
@@ -221,7 +301,17 @@ export default function CarsPage() {
             <div className="space-y-2">
               {["Gasoline", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"].map((fuel) => (
                 <div key={fuel} className="flex items-center space-x-2">
-                  <Checkbox id={`fuel-${fuel}`} />
+                  <Checkbox 
+                    id={`fuel-${fuel}`}
+                    checked={selectedFuelTypes.includes(fuel)}
+                    onCheckedChange={(checked) => {
+                      setSelectedFuelTypes(prev => 
+                        checked 
+                          ? [...prev, fuel]
+                          : prev.filter(f => f !== fuel)
+                      )
+                    }}
+                  />
                   <label htmlFor={`fuel-${fuel}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     {fuel}
                   </label>
@@ -287,7 +377,7 @@ export default function CarsPage() {
               </div>
               
               {/* Mobile Filter Button - Only visible on mobile */}
-              <Sheet>
+              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>
                   <Button className="lg:hidden bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
                     <Filter className="h-4 w-4 mr-2" /> Filters
@@ -301,10 +391,7 @@ export default function CarsPage() {
                     </SheetDescription>
                   </SheetHeader>
                   <FilterControls 
-                    onApply={() => {
-                      applyFilters()
-                      document.querySelector('[data-radix-collection-item]')?.click(); 
-                    }}
+                    onApply={() => applyFilters()}
                     onClear={clearFilters}
                   />
                 </SheetContent>
@@ -347,7 +434,7 @@ export default function CarsPage() {
                 )}
 
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-                  <p className="text-gray-500 mb-4 sm:mb-0">Showing <span className="font-medium text-gray-900">{cars.length}</span> vehicles</p>
+                  <p className="text-gray-500 mb-4 sm:mb-0">Showing <span className="font-medium text-gray-900">{filteredCars.length}</span> vehicles</p>
                   <div className="flex items-center">
                     <span className="text-sm text-gray-500 mr-2">Sort by:</span>
                     <Select defaultValue="featured">
@@ -365,7 +452,7 @@ export default function CarsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {cars.map((car) => (
+                  {filteredCars.map((car) => (
                     <Card
                       key={car.id}
                       className="group overflow-hidden border-0 rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300"
