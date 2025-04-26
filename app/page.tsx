@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/header"
 import { SiteFooter } from "@/components/footer"
 import { ArrowRight, ChevronLeft, ChevronRight, ShoppingBag, Star } from "lucide-react"
 import { useState, useEffect } from "react"
+import { TestDriveModal } from "@/components/test-drive-modal"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -30,6 +31,7 @@ export default function Home() {
   ]
   const [currentSlide, setCurrentSlide] = useState(0)
   const [fadeIn, setFadeIn] = useState(true)
+  const [isTestDriveModalOpen, setIsTestDriveModalOpen] = useState(false)
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -104,14 +106,13 @@ export default function Home() {
                             Explore Now
                           </Button>
                         </Link>
-                        <Link href="/contact?service=test-drive">
-                          <Button
-                            variant="outline"
-                            className="bg-transparent text-white border-2 border-white hover:bg-white/20 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                          >
-                            Book Test Drive
-                          </Button>
-                        </Link>
+                        <Button
+                          variant="outline"
+                          className="bg-transparent text-white border-2 border-white hover:bg-white/20 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                          onClick={() => setIsTestDriveModalOpen(true)}
+                        >
+                          Book Test Drive
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -600,6 +601,12 @@ export default function Home() {
         </section>
       </main>
       <SiteFooter />
+
+      {/* Test Drive Modal */}
+      <TestDriveModal 
+        isOpen={isTestDriveModalOpen} 
+        onClose={() => setIsTestDriveModalOpen(false)} 
+      />
     </div>
   )
 }

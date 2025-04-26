@@ -300,12 +300,12 @@ export default function AboutPage() {
             <div className="max-w-2xl mx-auto space-y-6">
               <h2 className="text-3xl font-bold tracking-tight">Ready to Experience Akram Import and Export?</h2>
               <p className="text-gray-600">
-                Visit our showroom to explore our curated collection of luxury vehicles and experience our exceptional
+                Visit our Akram Import and Export to explore our curated collection of luxury vehicles and experience our exceptional
                 service firsthand.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button className="rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white border-0 px-8">
-                  Visit Showroom
+                Visit  Akram Import and Export
                 </Button>
                 <Button
                   variant="outline"

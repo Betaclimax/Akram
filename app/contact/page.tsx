@@ -271,7 +271,7 @@ export default function ContactPage() {
                   <div className="rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-600/10 p-3 w-fit mb-6">
                     <MapPin className="h-8 w-8 text-cyan-500" />
                   </div>
-                  <h3 className="text-xl font-bold mb-3">Visit Our Showroom</h3>
+                  <h3 className="text-xl font-bold mb-3">Visit Our Akram Import and Export</h3>
                   <address className="not-italic text-gray-600">
                     <p>address</p>
                     <p>address</p>
@@ -603,7 +603,7 @@ export default function ContactPage() {
               </div>
               <h2 className="text-3xl font-bold tracking-tight mb-4">Find Us</h2>
               <p className="text-gray-600">
-                Visit our showroom to experience our exceptional collection of luxury vehicles in person.
+                Visit our Akram Import and Export to experience our exceptional collection of luxury vehicles in person.
               </p>
             </div>
 
@@ -624,7 +624,7 @@ export default function ContactPage() {
             <div className="max-w-2xl mx-auto space-y-6">
               <h2 className="text-3xl font-bold tracking-tight">Ready for the Ultimate Driving Experience?</h2>
               <p className="text-white/80">
-                Visit our showroom today or schedule a personalized consultation with one of our luxury vehicle
+                Visit our Akram Import and Export today or schedule a personalized consultation with one of our luxury vehicle
                 specialists.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
