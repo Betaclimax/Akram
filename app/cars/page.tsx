@@ -150,6 +150,8 @@ export default function CarsPage() {
   const [filteredCars, setFilteredCars] = useState<Car[]>(originalCars)
 
   useEffect(() => {
+    if (!searchParams) return;
+    
     const filter = searchParams.get('filter')
     const type = searchParams.get('type')
     
@@ -160,7 +162,6 @@ export default function CarsPage() {
       setSelectedTypes([type])
     }
     
-    // Apply filters if URL parameters are present
     if (filter || type) {
       applyFilters()
     }
@@ -191,154 +192,268 @@ export default function CarsPage() {
     setIsSheetOpen(false)
   }
 
-  // Filter component that's shared between desktop and mobile
-  const FilterControls = ({ onApply = () => {}, onClear = () => {} }) => (
-    <>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold">Filters</h2>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="text-gray-500 hover:text-gray-900 rounded-full border-gray-300"
-          onClick={onClear}
-        >
-          <X className="h-4 w-4 mr-2" /> Clear All
-        </Button>
-      </div>
+  const FilterControls = ({ onApply = () => {}, onClear = () => {} }) => {
+    const handleCheckboxClick = (e: React.MouseEvent) => {
+      e.stopPropagation()
+    }
 
-      <Accordion type="single" collapsible className="space-y-4">
-        <AccordionItem value="price" className="border-b">
-          <AccordionTrigger className="text-base font-medium">Price Range</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <Slider 
-                defaultValue={[0, 300000]} 
-                max={500000} 
-                step={5000}
-                value={priceRange}
-                onValueChange={(value) => setPriceRange(value)}
-              />
-              <div className="flex items-center justify-between">
-                <span className="text-sm">${priceRange[0].toLocaleString()}</span>
-                <span className="text-sm">${priceRange[1].toLocaleString()}</span>
+    return (
+      <>
+        <div className="flex items-center justify-between mb-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">Filters</h2>
+            <p className="text-sm text-gray-500">Refine your search</p>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-gray-500 hover:text-gray-900 rounded-full border-gray-200 hover:border-cyan-500 hover:bg-cyan-50 transition-all duration-300"
+            onClick={onClear}
+          >
+            <X className="h-4 w-4 mr-2" /> Clear All
+          </Button>
+        </div>
+
+        <Accordion type="single" collapsible className="space-y-4">
+          <AccordionItem value="price" className="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-gray-50">
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-600/10 flex items-center justify-center mr-3">
+                  <span className="text-cyan-500 font-semibold">$</span>
+                </div>
+                <span className="text-base font-medium">Price Range</span>
               </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="condition" className="border-b">
-          <AccordionTrigger className="text-base font-medium">Condition</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {["New", "Used", "Certified Pre-Owned"].map((condition) => (
-                <div key={condition} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`condition-${condition}`}
-                    checked={selectedConditions.includes(condition)}
-                    onCheckedChange={(checked) => {
-                      setSelectedConditions(prev => 
-                        checked 
-                          ? [...prev, condition]
-                          : prev.filter(c => c !== condition)
-                      )
-                    }}
-                  />
-                  <label htmlFor={`condition-${condition}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    {condition}
-                  </label>
+            </AccordionTrigger>
+            <AccordionContent className="px-4 pb-4">
+              <div className="space-y-4 pt-2">
+                <Slider 
+                  defaultValue={[0, 300000]} 
+                  max={500000} 
+                  step={5000}
+                  value={priceRange}
+                  onValueChange={(value) => setPriceRange(value)}
+                  className="py-4"
+                />
+                <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">From:</span>
+                    <span className="text-sm text-gray-600">${priceRange[0].toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">To:</span>
+                    <span className="text-sm text-gray-600">${priceRange[1].toLocaleString()}</span>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-        <AccordionItem value="make" className="border-b">
-          <AccordionTrigger className="text-base font-medium">Make</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {["Audi", "BMW", "Ferrari", "Mercedes-Benz", "Porsche", "Tesla"].map((make) => (
-                <div key={make} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`make-${make}`}
-                    checked={selectedMakes.includes(make)}
-                    onCheckedChange={(checked) => {
-                      setSelectedMakes(prev => 
-                        checked 
-                          ? [...prev, make]
-                          : prev.filter(m => m !== make)
-                      )
-                    }}
-                  />
-                  <label htmlFor={`make-${make}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    {make}
-                  </label>
+          <AccordionItem value="condition" className="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-gray-50">
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-600/10 flex items-center justify-center mr-3">
+                  <span className="text-cyan-500 font-semibold">✓</span>
                 </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+                <span className="text-base font-medium">Condition</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="px-4 pb-4">
+              <div className="space-y-2">
+                {["New", "Used", "Certified Pre-Owned"].map((condition) => (
+                  <div 
+                    key={condition} 
+                    className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 ${
+                      selectedConditions.includes(condition) 
+                        ? 'bg-cyan-50 border border-cyan-200' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={handleCheckboxClick}
+                  >
+                    <Checkbox 
+                      id={`condition-${condition}`}
+                      checked={selectedConditions.includes(condition)}
+                      onCheckedChange={(checked) => {
+                        setSelectedConditions(prev => 
+                          checked 
+                            ? [...prev, condition]
+                            : prev.filter(c => c !== condition)
+                        )
+                      }}
+                      className="border-gray-300 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
+                    />
+                    <label 
+                      htmlFor={`condition-${condition}`} 
+                      className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer transition-colors ${
+                        selectedConditions.includes(condition) 
+                          ? 'text-cyan-600' 
+                          : 'hover:text-cyan-500'
+                      }`}
+                    >
+                      {condition}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-        <AccordionItem value="type" className="border-b">
-          <AccordionTrigger className="text-base font-medium">Vehicle Type</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {["Sports", "Luxury", "SUV", "Electric", "Convertible"].map((type) => (
-                <div key={type} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`type-${type}`}
-                    checked={selectedTypes.includes(type)}
-                    onCheckedChange={(checked) => {
-                      setSelectedTypes(prev => 
-                        checked 
-                          ? [...prev, type]
-                          : prev.filter(t => t !== type)
-                      )
-                    }}
-                  />
-                  <label htmlFor={`type-${type}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    {type}
-                  </label>
+          <AccordionItem value="make" className="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-gray-50">
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-600/10 flex items-center justify-center mr-3">
+                  <span className="text-cyan-500 font-semibold">🚗</span>
                 </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+                <span className="text-base font-medium">Make</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="px-4 pb-4">
+              <div className="grid grid-cols-2 gap-2">
+                {["Audi", "BMW", "Ferrari", "Mercedes-Benz", "Porsche", "Tesla"].map((make) => (
+                  <div 
+                    key={make} 
+                    className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 ${
+                      selectedMakes.includes(make) 
+                        ? 'bg-cyan-50 border border-cyan-200' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={handleCheckboxClick}
+                  >
+                    <Checkbox 
+                      id={`make-${make}`}
+                      checked={selectedMakes.includes(make)}
+                      onCheckedChange={(checked) => {
+                        setSelectedMakes(prev => 
+                          checked 
+                            ? [...prev, make]
+                            : prev.filter(m => m !== make)
+                        )
+                      }}
+                      className="border-gray-300 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
+                    />
+                    <label 
+                      htmlFor={`make-${make}`} 
+                      className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer transition-colors ${
+                        selectedMakes.includes(make) 
+                          ? 'text-cyan-600' 
+                          : 'hover:text-cyan-500'
+                      }`}
+                    >
+                      {make}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-        <AccordionItem value="fuel" className="border-b">
-          <AccordionTrigger className="text-base font-medium">Fuel Type</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {["Gasoline", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"].map((fuel) => (
-                <div key={fuel} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`fuel-${fuel}`}
-                    checked={selectedFuelTypes.includes(fuel)}
-                    onCheckedChange={(checked) => {
-                      setSelectedFuelTypes(prev => 
-                        checked 
-                          ? [...prev, fuel]
-                          : prev.filter(f => f !== fuel)
-                      )
-                    }}
-                  />
-                  <label htmlFor={`fuel-${fuel}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    {fuel}
-                  </label>
+          <AccordionItem value="type" className="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-gray-50">
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-600/10 flex items-center justify-center mr-3">
+                  <span className="text-cyan-500 font-semibold">🏎️</span>
                 </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+                <span className="text-base font-medium">Vehicle Type</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="px-4 pb-4">
+              <div className="grid grid-cols-2 gap-2">
+                {["Sports", "Luxury", "SUV", "Electric", "Convertible"].map((type) => (
+                  <div 
+                    key={type} 
+                    className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 ${
+                      selectedTypes.includes(type) 
+                        ? 'bg-cyan-50 border border-cyan-200' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={handleCheckboxClick}
+                  >
+                    <Checkbox 
+                      id={`type-${type}`}
+                      checked={selectedTypes.includes(type)}
+                      onCheckedChange={(checked) => {
+                        setSelectedTypes(prev => 
+                          checked 
+                            ? [...prev, type]
+                            : prev.filter(t => t !== type)
+                        )
+                      }}
+                      className="border-gray-300 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
+                    />
+                    <label 
+                      htmlFor={`type-${type}`} 
+                      className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer transition-colors ${
+                        selectedTypes.includes(type) 
+                          ? 'text-cyan-600' 
+                          : 'hover:text-cyan-500'
+                      }`}
+                    >
+                      {type}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
 
-      <Button 
-        className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white rounded-full"
-        onClick={onApply}
-      >
-        <Filter className="h-4 w-4 mr-2" /> Apply Filters
-      </Button>
-    </>
-  )
+          <AccordionItem value="fuel" className="border rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+            <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-gray-50">
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-600/10 flex items-center justify-center mr-3">
+                  <span className="text-cyan-500 font-semibold">⛽</span>
+                </div>
+                <span className="text-base font-medium">Fuel Type</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="px-4 pb-4">
+              <div className="grid grid-cols-2 gap-2">
+                {["Gasoline", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"].map((fuel) => (
+                  <div 
+                    key={fuel} 
+                    className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 ${
+                      selectedFuelTypes.includes(fuel) 
+                        ? 'bg-cyan-50 border border-cyan-200' 
+                        : 'hover:bg-gray-50'
+                    }`}
+                    onClick={handleCheckboxClick}
+                  >
+                    <Checkbox 
+                      id={`fuel-${fuel}`}
+                      checked={selectedFuelTypes.includes(fuel)}
+                      onCheckedChange={(checked) => {
+                        setSelectedFuelTypes(prev => 
+                          checked 
+                            ? [...prev, fuel]
+                            : prev.filter(f => f !== fuel)
+                        )
+                      }}
+                      className="border-gray-300 data-[state=checked]:bg-cyan-500 data-[state=checked]:border-cyan-500"
+                    />
+                    <label 
+                      htmlFor={`fuel-${fuel}`} 
+                      className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer transition-colors ${
+                        selectedFuelTypes.includes(fuel) 
+                          ? 'text-cyan-600' 
+                          : 'hover:text-cyan-500'
+                      }`}
+                    >
+                      {fuel}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        <Button 
+          className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white rounded-full py-4 text-base font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          onClick={onApply}
+        >
+          <Filter className="h-4 w-4 mr-2" /> Apply Filters
+        </Button>
+      </>
+    )
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
