@@ -159,21 +159,11 @@ export default function CarsPage() {
 
   const applyFilters = () => {
     const filtered = originalCars.filter(car => {
-      // Price Range Filter
       const meetsPrice = car.price >= priceRange[0] && car.price <= priceRange[1]
-      
-      // Condition Filter
-      const meetsCondition = selectedConditions.length === 0 || selectedConditions.includes(car.condition)
-      
-      // Make Filter
+      const meetsCondition = selectedConditions.length === 0 || selectedConditions.includes(car.condition) 
       const meetsMake = selectedMakes.length === 0 || selectedMakes.includes(car.make)
-      
-      // Fuel Type Filter
       const meetsFuelType = selectedFuelTypes.length === 0 || selectedFuelTypes.includes(car.fuelType)
-      
-      // Type Filter (assuming car.tag represents the type)
       const meetsType = selectedTypes.length === 0 || (car.tag && selectedTypes.includes(car.tag))
-      
       return meetsPrice && meetsCondition && meetsMake && meetsFuelType && meetsType
     })
 
@@ -353,15 +343,6 @@ export default function CarsPage() {
                 <p className="text-lg text-white/90 font-light leading-relaxed tracking-wide backdrop-blur-sm bg-black/10 p-3 rounded-lg border-l-2 border-cyan-400">
                   Browse our extensive collection of premium vehicles, from sports cars to luxury sedans and electric innovations.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 bg-white/10 backdrop-blur-md rounded-xl p-4">
-                  <Input 
-                    placeholder="Search by make, model, or keyword" 
-                    className="flex-1 bg-white/20 border-0 placeholder:text-white/60 text-white"
-                  />
-                  <Button className="bg-white text-cyan-600 hover:bg-white/90">
-                    <Search className="h-4 w-4 mr-2" /> Search
-                  </Button>
-                </div>
               </div>
             </div>
           </div>
