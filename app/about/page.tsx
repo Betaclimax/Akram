@@ -15,13 +15,13 @@ export default function AboutPage() {
         {/* Hero Section */}
         <section className="relative h-[60vh] overflow-hidden">
           <Image
-            src="/images/about/about.png"
+            src="/images/about/about3.png"
             alt="Luxury car showroom"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent flex items-center">
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent flex items-center">
             <div className="container px-4 md:px-6 mx-auto">
               <div className="max-w-lg space-y-4">
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white">

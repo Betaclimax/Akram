@@ -15,7 +15,7 @@ export default function Home() {
     { 
       src: "/images/car4.PNG", 
       alt: "2023 Porsche 911",
-      heading: "Ride with Confidence"
+      heading: "Ride with Confidence",
     },
     { 
       src: "/images/car5.PNG", 
@@ -83,6 +83,7 @@ export default function Home() {
                   fill
                   className="object-cover"
                   priority={index === 0} 
+                  quality={90}
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent flex items-center">
                   <div className="container px-4 md:px-6 mx-auto">

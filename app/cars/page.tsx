@@ -248,7 +248,7 @@ export default function CarsPage() {
         {/* Hero Banner Section */}
         <section className="relative w-full h-[60vh] overflow-hidden">
           <Image
-            src="/images/discover/discover.PNG"
+            src="/images/discover/discover2.png"
             alt="Luxury car collection"
             fill
             className="object-cover"
@@ -310,7 +310,6 @@ export default function CarsPage() {
                 </SheetContent>
               </Sheet>
             </div>
-            
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Filters Sidebar - Only visible on desktop */}
               <div className="hidden lg:block lg:w-1/4">
@@ -318,7 +317,6 @@ export default function CarsPage() {
                   <FilterControls onApply={applyFilters} onClear={clearFilters} />
                 </div>
               </div>
-
               {/* Results */}
               <div className="lg:w-3/4 w-full">
                 {/* Active Filters */}
@@ -383,6 +381,9 @@ export default function CarsPage() {
                               className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                             />
                           </div>
+
+
+
                           {car.tag && (
                             <div className="absolute top-4 right-4 px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full">
                               {car.tag}
@@ -393,10 +394,15 @@ export default function CarsPage() {
                           </div>
                           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
                         </div>
+
+
                       </Link>
                       <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-2">
                           <div>
+
+
+
                             <Link href={`/cars/${car.id}`} className="hover:text-cyan-600 transition-colors">
                               <h3 className="text-xl font-bold">
                                 {car.make} {car.model}
@@ -444,8 +450,15 @@ export default function CarsPage() {
                         </div>
                         
                         <div className="flex justify-between items-center mt-4">
+
                           <div>
                             <span className="text-sm text-gray-500 font-normal">Starting at</span>
+
+
+
+
+
+
                             <p className="text-2xl font-bold">${car.price.toLocaleString()}</p>
                             <span className="text-xs text-gray-500">Est. ${Math.round(car.price / 60).toLocaleString()}/mo</span>
                           </div>
@@ -480,6 +493,7 @@ export default function CarsPage() {
                     </Button>
                   </div>
                 </div>
+
               </div>            </div>
           </div>
         </section>
