@@ -1,9 +1,10 @@
 "use client"
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Clock, Mail, MapPin, Phone } from "lucide-react"
+import { Clock, Mail, MapPin, Phone, Calendar, Car, User } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 
 import { SiteHeader } from "@/components/header"
 import { SiteFooter } from "@/components/footer"
@@ -15,8 +16,24 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function ContactPage() {
+  const searchParams = useSearchParams()
+  const service = searchParams?.get('service')
+  const [showTestDriveForm, setShowTestDriveForm] = useState(false)
+
+  useEffect(() => {
+    if (service === 'test-drive') {
+      setShowTestDriveForm(true)
+      // Scroll to the form section
+      const formSection = document.getElementById('test-drive-form')
+      if (formSection) {
+        formSection.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }, [service])
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -25,9 +42,24 @@ export default function ContactPage() {
     message: "",
   })
 
+  const [testDriveForm, setTestDriveForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    preferredDate: "",
+    preferredTime: "",
+    carModel: "",
+    additionalNotes: "",
+  })
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormState((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleTestDriveChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setTestDriveForm((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleRadioChange = (value: string) => {
@@ -47,9 +79,24 @@ export default function ContactPage() {
     })
   }
 
+  const handleTestDriveSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log("Test Drive Form submitted:", testDriveForm)
+    alert("Thank you for booking a test drive! We'll contact you shortly to confirm your appointment.")
+    setTestDriveForm({
+      name: "",
+      email: "",
+      phone: "",
+      preferredDate: "",
+      preferredTime: "",
+      carModel: "",
+      additionalNotes: "",
+    })
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
-    <SiteHeader />
+      <SiteHeader />
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative h-[60vh] overflow-hidden">
@@ -71,6 +118,149 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
+
+        {/* Test Drive Booking Form Section */}
+        {showTestDriveForm && (
+          <section id="test-drive-form" className="py-16 bg-gradient-to-b from-white to-gray-50">
+            <div className="container px-4 md:px-6 mx-auto">
+              <div className="max-w-3xl mx-auto">
+                <div className="text-center mb-8">
+                  <div className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wide uppercase bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full mb-4">
+                    Book a Test Drive
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tight mb-4">Experience Your Dream Car</h2>
+                  <p className="text-gray-600">Schedule a test drive and experience the luxury and performance firsthand</p>
+                </div>
+
+                <Card className="border-0 shadow-lg rounded-2xl overflow-hidden">
+                  <CardContent className="p-8">
+                    <form onSubmit={handleTestDriveSubmit} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="name">Full Name</Label>
+                          <div className="relative">
+                            <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                            <Input
+                              id="name"
+                              name="name"
+                              value={testDriveForm.name}
+                              onChange={handleTestDriveChange}
+                              className="pl-10"
+                              placeholder="John Doe"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">Email</Label>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                            <Input
+                              id="email"
+                              name="email"
+                              type="email"
+                              value={testDriveForm.email}
+                              onChange={handleTestDriveChange}
+                              className="pl-10"
+                              placeholder="john@example.com"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="phone">Phone Number</Label>
+                          <div className="relative">
+                            <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                            <Input
+                              id="phone"
+                              name="phone"
+                              type="tel"
+                              value={testDriveForm.phone}
+                              onChange={handleTestDriveChange}
+                              className="pl-10"
+                              placeholder="+1 (555) 000-0000"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="carModel">Car Model</Label>
+                          <div className="relative">
+                            <Car className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                            <Select
+                              value={testDriveForm.carModel}
+                              onValueChange={(value) => setTestDriveForm(prev => ({ ...prev, carModel: value }))}
+                            >
+                              <SelectTrigger className="pl-10">
+                                <SelectValue placeholder="Select a model" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="mercedes-amg">Mercedes-AMG GT</SelectItem>
+                                <SelectItem value="audi-etron">Audi e-tron GT</SelectItem>
+                                <SelectItem value="porsche-911">Porsche 911 Turbo S</SelectItem>
+                                <SelectItem value="bmw-m8">BMW M8 Competition</SelectItem>
+                                <SelectItem value="ferrari-488">Ferrari 488 GTB</SelectItem>
+                                <SelectItem value="tesla-s">Tesla Model S Plaid</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="preferredDate">Preferred Date</Label>
+                          <div className="relative">
+                            <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                            <Input
+                              id="preferredDate"
+                              name="preferredDate"
+                              type="date"
+                              value={testDriveForm.preferredDate}
+                              onChange={handleTestDriveChange}
+                              className="pl-10"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="preferredTime">Preferred Time</Label>
+                          <Select
+                            value={testDriveForm.preferredTime}
+                            onValueChange={(value) => setTestDriveForm(prev => ({ ...prev, preferredTime: value }))}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a time" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="morning">Morning (9:00 AM - 12:00 PM)</SelectItem>
+                              <SelectItem value="afternoon">Afternoon (1:00 PM - 4:00 PM)</SelectItem>
+                              <SelectItem value="evening">Evening (4:00 PM - 7:00 PM)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="additionalNotes">Additional Notes</Label>
+                        <Textarea
+                          id="additionalNotes"
+                          name="additionalNotes"
+                          value={testDriveForm.additionalNotes}
+                          onChange={handleTestDriveChange}
+                          placeholder="Any specific requirements or questions?"
+                          className="min-h-[100px]"
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white rounded-full py-6 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                      >
+                        Book Test Drive
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Contact Information Section */}
         <section className="py-16 bg-white">

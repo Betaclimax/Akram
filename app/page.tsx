@@ -99,15 +99,19 @@ export default function Home() {
                         At our car shop, we are committed to providing our customers with exceptional service and competitive pricing.
                       </p>
                       <div className="flex flex-wrap gap-4">
-                        <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white border-0 rounded-full px-8">
-                          Explore Now
-                        </Button>
-                        <Button
-                          variant="outline"
-                          className="bg-white/10 backdrop-blur-sm text-white border-white/20 hover:bg-white/20 rounded-full px-8"
-                        >
-                          Book Test Drive
-                        </Button>
+                        <Link href="/cars?filter=new&type=luxury">
+                          <Button className="bg-white text-cyan-600 hover:bg-white/90 border-2 border-cyan-600 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                            Explore Now
+                          </Button>
+                        </Link>
+                        <Link href="/contact?service=test-drive">
+                          <Button
+                            variant="outline"
+                            className="bg-transparent text-white border-2 border-white hover:bg-white/20 rounded-full px-8 py-6 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                          >
+                            Book Test Drive
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </div>

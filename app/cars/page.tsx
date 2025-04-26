@@ -4,7 +4,8 @@ import Image from "next/image"
 import { SiteHeader } from "@/components/header"
 import { SiteFooter } from "@/components/footer"
 import { ChevronDown, Filter, Search, Star, X } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -50,6 +51,7 @@ interface Car {
 }
 
 export default function CarsPage() {
+  const searchParams = useSearchParams()
   const [priceRange, setPriceRange] = useState([0, 300000])
   const [filtersApplied, setFiltersApplied] = useState(false)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -146,6 +148,24 @@ export default function CarsPage() {
 
   // Filtered cars state
   const [filteredCars, setFilteredCars] = useState<Car[]>(originalCars)
+
+  // Apply initial filters from URL parameters
+  useEffect(() => {
+    const filter = searchParams.get('filter')
+    const type = searchParams.get('type')
+    
+    if (filter) {
+      setSelectedConditions([filter])
+    }
+    if (type) {
+      setSelectedTypes([type])
+    }
+    
+    // Apply filters if URL parameters are present
+    if (filter || type) {
+      applyFilters()
+    }
+  }, [searchParams])
 
   const clearFilters = () => {
     setPriceRange([0, 300000])
