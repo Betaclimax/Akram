@@ -149,7 +149,6 @@ export default function CarsPage() {
   // Filtered cars state
   const [filteredCars, setFilteredCars] = useState<Car[]>(originalCars)
 
-  // Apply initial filters from URL parameters
   useEffect(() => {
     const filter = searchParams.get('filter')
     const type = searchParams.get('type')
