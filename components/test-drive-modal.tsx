@@ -15,6 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { format } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 interface TestDriveModalProps {
   isOpen: boolean
@@ -22,11 +25,11 @@ interface TestDriveModalProps {
 }
 
 export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
+  const [date, setDate] = useState<Date>()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    preferredDate: "",
     preferredTime: "",
     carModel: "",
     additionalNotes: "",
@@ -39,13 +42,12 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Test Drive Form submitted:", formData)
+    console.log("Test Drive Form submitted:", { ...formData, date })
     alert("Thank you for booking a test drive! We'll contact you shortly to confirm your appointment.")
     setFormData({
       name: "",
       email: "",
       phone: "",
-      preferredDate: "",
       preferredTime: "",
       carModel: "",
       additionalNotes: "",
@@ -161,19 +163,26 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="preferredDate" className="text-sm">Preferred Date</Label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <Input
-                        id="preferredDate"
-                        name="preferredDate"
-                        type="date"
-                        value={formData.preferredDate}
-                        onChange={handleChange}
-                        className="pl-10 h-11"
-                        required
-                      />
-                    </div>
+                    <Label>Preferred Date</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start text-left font-normal"
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {date ? format(date, "PPP") : "Pick a date"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="preferredTime" className="text-sm">Preferred Time</Label>
