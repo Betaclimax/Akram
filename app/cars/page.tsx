@@ -518,15 +518,8 @@ export default function CarsPage() {
                         </div>
                         
                         <div className="flex justify-between items-center mt-4">
-
                           <div>
                             <span className="text-sm text-gray-500 font-normal">Starting at</span>
-
-
-
-
-
-
                             <p className="text-2xl font-bold">${car.price.toLocaleString()}</p>
                             <span className="text-xs text-gray-500">Est. ${Math.round(car.price / 60).toLocaleString()}/mo</span>
                           </div>
@@ -561,8 +554,8 @@ export default function CarsPage() {
                     </Button>
                   </div>
                 </div>
-
-              </div>            </div>
+              </div>   
+            </div>
           </div>
         </section>
       </main>
