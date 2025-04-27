@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TestDriveModal } from "@/components/test-drive-modal"
+import { VirtualConsultationModal } from "@/components/virtual-consultation-modal"
 import { 
   Car, 
   Calendar, 
@@ -31,8 +32,36 @@ import {
   Wrench,
   Camera,
   Video,
-  ArrowLeft
+  ArrowLeft,
+  MessageCircle,
+  Bookmark,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Youtube,
+  Info as InfoIcon,
+  Search,
+  Filter,
+  SlidersHorizontal
 } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { toast } from "sonner"
 
 // Mock data for a single car
 const carData = {
@@ -112,7 +141,52 @@ const carData = {
 export function CarDetails() {
   const [selectedImage, setSelectedImage] = useState(0)
   const [isTestDriveModalOpen, setIsTestDriveModalOpen] = useState(false)
+  const [isVirtualConsultationOpen, setIsVirtualConsultationOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [showShareMenu, setShowShareMenu] = useState(false)
+  const [searchPreferences, setSearchPreferences] = useState({
+    priceRange: [0, 200000],
+    make: "",
+    model: "",
+    year: "",
+    mileage: "",
+    fuelType: "",
+    transmission: "",
+  })
+
+  const handleShare = (platform: string) => {
+    const url = window.location.href
+    const title = `${carData.make} ${carData.model} - Luxury Car`
+    
+    switch (platform) {
+      case 'facebook':
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank')
+        break
+      case 'twitter':
+        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank')
+        break
+      case 'linkedin':
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank')
+        break
+      case 'whatsapp':
+        window.open(`https://wa.me/?text=${title}%20${url}`, '_blank')
+        break
+    }
+    
+    setShowShareMenu(false)
+    toast.success(`Shared on ${platform}!`)
+  }
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite)
+    toast.success(isFavorite ? "Removed from favorites" : "Added to favorites")
+  }
+
+  const saveSearchPreferences = () => {
+    // Here you would typically save to localStorage or a backend
+    toast.success("Search preferences saved!")
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -137,21 +211,58 @@ export function CarDetails() {
             <div className="grid md:grid-cols-2 gap-8">
               {/* Image Gallery */}
               <div className="space-y-4">
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
                   <Image
                     src={carData.images[selectedImage]}
                     alt={`${carData.make} ${carData.model}`}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                     priority
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-white hover:bg-white/20 rounded-full"
+                        onClick={toggleFavorite}
+                      >
+                        <Heart className={`h-6 w-6 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
+                      </Button>
+                      <DropdownMenu open={showShareMenu} onOpenChange={setShowShareMenu}>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-white hover:bg-white/20 rounded-full"
+                          >
+                            <Share2 className="h-6 w-6" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                          <DropdownMenuItem onClick={() => handleShare('facebook')}>
+                            <Facebook className="h-4 w-4 mr-2" /> Facebook
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleShare('twitter')}>
+                            <Twitter className="h-4 w-4 mr-2" /> Twitter
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleShare('linkedin')}>
+                            <Linkedin className="h-4 w-4 mr-2" /> LinkedIn
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleShare('whatsapp')}>
+                            <MessageCircle className="h-4 w-4 mr-2" /> WhatsApp
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4">
                   {carData.images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative aspect-[4/3] rounded-lg overflow-hidden ${
+                      className={`relative aspect-[4/3] rounded-lg overflow-hidden group ${
                         selectedImage === index ? 'ring-2 ring-cyan-500' : ''
                       }`}
                     >
@@ -159,7 +270,7 @@ export function CarDetails() {
                         src={image}
                         alt={`${carData.make} ${carData.model} - View ${index + 1}`}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </button>
                   ))}
@@ -215,21 +326,158 @@ export function CarDetails() {
                   <Button 
                     variant="outline" 
                     className="flex-1 border-gray-200 hover:border-cyan-500 hover:text-cyan-500 rounded-full py-6"
+                    onClick={() => setIsVirtualConsultationOpen(true)}
                   >
-                    <Phone className="h-5 w-5 mr-2" /> Contact Dealer
+                    <Video className="h-5 w-5 mr-2" /> Virtual Consultation
                   </Button>
                 </div>
 
                 <div className="flex items-center justify-between pt-4 border-t">
-                  <Button variant="ghost" className="text-gray-500 hover:text-gray-700">
-                    <Heart className="h-5 w-5 mr-2" /> Save
-                  </Button>
-                  <Button variant="ghost" className="text-gray-500 hover:text-gray-700">
-                    <Share2 className="h-5 w-5 mr-2" /> Share
-                  </Button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          className="text-gray-500 hover:text-gray-700"
+                          onClick={toggleFavorite}
+                        >
+                          <Heart className={`h-5 w-5 mr-2 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} /> 
+                          {isFavorite ? 'Saved' : 'Save'}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="text-gray-500 hover:text-gray-700">
+                        <Share2 className="h-5 w-5 mr-2" /> Share
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={() => handleShare('facebook')}>
+                        <Facebook className="h-4 w-4 mr-2" /> Facebook
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('twitter')}>
+                        <Twitter className="h-4 w-4 mr-2" /> Twitter
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('linkedin')}>
+                        <Linkedin className="h-4 w-4 mr-2" /> LinkedIn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('whatsapp')}>
+                        <MessageCircle className="h-4 w-4 mr-2" /> WhatsApp
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Search Preferences Section */}
+        <section className="py-8 bg-gray-50">
+          <div className="container px-4 md:px-6 mx-auto">
+            <Card className="border-0 shadow-lg rounded-2xl overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold">Save Search Preferences</h3>
+                  <Button
+                    variant="outline"
+                    className="text-cyan-500 border-cyan-500 hover:bg-cyan-50"
+                    onClick={saveSearchPreferences}
+                  >
+                    <Bookmark className="h-4 w-4 mr-2" /> Save Preferences
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label>Price Range</Label>
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        type="number"
+                        placeholder="Min"
+                        value={searchPreferences.priceRange[0]}
+                        onChange={(e) => setSearchPreferences(prev => ({
+                          ...prev,
+                          priceRange: [parseInt(e.target.value), prev.priceRange[1]]
+                        }))}
+                      />
+                      <span>-</span>
+                      <Input
+                        type="number"
+                        placeholder="Max"
+                        value={searchPreferences.priceRange[1]}
+                        onChange={(e) => setSearchPreferences(prev => ({
+                          ...prev,
+                          priceRange: [prev.priceRange[0], parseInt(e.target.value)]
+                        }))}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Make</Label>
+                    <Input
+                      placeholder="e.g., Mercedes-Benz"
+                      value={searchPreferences.make}
+                      onChange={(e) => setSearchPreferences(prev => ({
+                        ...prev,
+                        make: e.target.value
+                      }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Model</Label>
+                    <Input
+                      placeholder="e.g., AMG GT"
+                      value={searchPreferences.model}
+                      onChange={(e) => setSearchPreferences(prev => ({
+                        ...prev,
+                        model: e.target.value
+                      }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Year</Label>
+                    <Input
+                      type="number"
+                      placeholder="e.g., 2023"
+                      value={searchPreferences.year}
+                      onChange={(e) => setSearchPreferences(prev => ({
+                        ...prev,
+                        year: e.target.value
+                      }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Mileage</Label>
+                    <Input
+                      type="number"
+                      placeholder="e.g., 10000"
+                      value={searchPreferences.mileage}
+                      onChange={(e) => setSearchPreferences(prev => ({
+                        ...prev,
+                        mileage: e.target.value
+                      }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Fuel Type</Label>
+                    <Input
+                      placeholder="e.g., Gasoline"
+                      value={searchPreferences.fuelType}
+                      onChange={(e) => setSearchPreferences(prev => ({
+                        ...prev,
+                        fuelType: e.target.value
+                      }))}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
@@ -462,10 +710,14 @@ export function CarDetails() {
       </main>
       <SiteFooter />
 
-      {/* Test Drive Modal */}
+      {/* Modals */}
       <TestDriveModal 
         isOpen={isTestDriveModalOpen} 
         onClose={() => setIsTestDriveModalOpen(false)} 
+      />
+      <VirtualConsultationModal
+        isOpen={isVirtualConsultationOpen}
+        onClose={() => setIsVirtualConsultationOpen(false)}
       />
     </div>
   )
