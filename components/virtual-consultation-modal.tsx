@@ -1,6 +1,7 @@
 "use client"
+
 import { useState } from "react"
-import { Calendar, Car, Mail, Phone, User, X } from "lucide-react"
+import { Calendar, Car, Mail, Phone, User, X, Video, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -13,19 +14,18 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 
-interface TestDriveModalProps {
+interface VirtualConsultationModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
+export function VirtualConsultationModal({ isOpen, onClose }: VirtualConsultationModalProps) {
   const [date, setDate] = useState<Date>()
   const [formData, setFormData] = useState({
     name: "",
@@ -33,6 +33,7 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
     phone: "",
     preferredTime: "",
     carModel: "",
+    consultationType: "",
     additionalNotes: "",
   })
 
@@ -43,14 +44,15 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Test Drive Form submitted:", { ...formData, date })
-    alert("Thank you for booking a test drive! We'll contact you shortly to confirm your appointment.")
+    console.log("Virtual Consultation Form submitted:", { ...formData, date })
+    alert("Thank you for scheduling a virtual consultation! We'll contact you shortly to confirm your appointment.")
     setFormData({
       name: "",
       email: "",
       phone: "",
       preferredTime: "",
       carModel: "",
+      consultationType: "",
       additionalNotes: "",
     })
     onClose()
@@ -64,9 +66,9 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
           <div className="bg-gradient-to-r from-cyan-500 to-purple-600 p-4 sm:p-6 text-white sticky top-0 z-10">
             <div className="flex justify-between items-start">
               <div>
-                <DialogTitle className="text-xl sm:text-2xl font-bold">Book a Test Drive</DialogTitle>
+                <DialogTitle className="text-xl sm:text-2xl font-bold">Schedule Virtual Consultation</DialogTitle>
                 <DialogDescription className="text-white/80 mt-1 sm:mt-2 text-sm sm:text-base">
-                  Experience your dream car firsthand
+                  Get expert advice from the comfort of your home
                 </DialogDescription>
               </div>
               <Button
@@ -137,9 +139,9 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
                 </div>
               </div>
 
-              {/* Test Drive Details Section */}
+              {/* Consultation Details Section */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Test Drive Details</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Consultation Details</h3>
                 <div className="grid grid-cols-1 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="carModel" className="text-sm">Car Model</Label>
@@ -162,6 +164,24 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
                         </SelectContent>
                       </Select>
                     </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="consultationType" className="text-sm">Consultation Type</Label>
+                    <Select
+                      value={formData.consultationType}
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, consultationType: value }))}
+                    >
+                      <SelectTrigger className="h-11">
+                        <SelectValue placeholder="Select consultation type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="general">General Information</SelectItem>
+                        <SelectItem value="technical">Technical Specifications</SelectItem>
+                        <SelectItem value="financing">Financing Options</SelectItem>
+                        <SelectItem value="customization">Customization Options</SelectItem>
+                        <SelectItem value="comparison">Model Comparison</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="space-y-2">
                     <Label>Preferred Date</Label>
@@ -212,7 +232,7 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
                   name="additionalNotes"
                   value={formData.additionalNotes}
                   onChange={handleChange}
-                  placeholder="Any specific requirements or questions?"
+                  placeholder="Any specific questions or topics you'd like to discuss?"
                   className="min-h-[100px] resize-none"
                 />
               </div>
@@ -223,7 +243,7 @@ export function TestDriveModal({ isOpen, onClose }: TestDriveModalProps) {
                   type="submit"
                   className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white rounded-full py-4 sm:py-6 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
-                  Book Test Drive
+                  <Video className="h-5 w-5 mr-2" /> Schedule Consultation
                 </Button>
               </div>
             </form>
